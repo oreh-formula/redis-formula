@@ -50,14 +50,6 @@ redis-init-script:
       - sls: redis.common
 
 
-redis-old-init-disable:
-  cmd:
-    - wait
-    - name: update-rc.d -f redis-server remove
-    - watch:
-      - file: redis-init-script
-
-
 redis-pid-dir:
   file.directory:
     - name: /var/db/redis
