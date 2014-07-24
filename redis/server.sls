@@ -83,13 +83,11 @@ redis-server:
     - source: salt://redis/templates/redis-{{ cfg_version }}.conf.jinja
     - require:
       - file: redis-init-script
-      - cmd: redis-old-init-disable
       - file: redis-pid-dir
   service:
     - running
     - watch:
       - file: redis-init-script
-      - cmd: redis-old-init-disable
       - file: redis-server
 
 
