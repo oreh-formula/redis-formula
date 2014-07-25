@@ -74,7 +74,7 @@ redis-log-dir:
     - require:
       - user: redis_user
 
-redis-conf-dir
+redis-conf-dir:
   file.directory:
     - name: /etc/redis
     - mode: 755
