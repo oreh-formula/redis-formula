@@ -74,6 +74,13 @@ redis-log-dir:
     - require:
       - user: redis_user
 
+redis-conf-dir
+  file.directory:
+    - name: /etc/redis
+    - mode: 755
+    - user: root
+    - group: root
+    - makedirs: True
 
 redis-server:
   file:
@@ -84,6 +91,7 @@ redis-server:
     - require:
       - file: redis-init-script
       - file: redis-pid-dir
+      - file: redis-conf-dir
   service:
     - running
     - watch:
