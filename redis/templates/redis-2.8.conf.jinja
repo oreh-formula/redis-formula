@@ -1,5 +1,5 @@
 {% set redis  = pillar.get('redis', {}) -%}
-daemonize no
+daemonize yes
 
 pidfile {{ redis.get('pidfile', '/var/db/redis/redis.pid') }}
 port {{ redis.get('port', 6379) }}

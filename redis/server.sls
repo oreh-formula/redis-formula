@@ -6,18 +6,19 @@ include:
 
 
 {% set install_from   = redis.install_from|default('package') -%}
-{% set svc_state      = salt['pillar.get']('redis:svc_state', 'running') -%}
-{% set svc_onboot     = salt['pillar.get']('redis:svc_onboot', True) -%}
-{% set cfg_version    = salt['pillar.get']('redis:cfg_version', '2.4') -%}
+{% set svc_state      = redis.svc_state|default('running') -%}
+{% set svc_onboot     = redis.svc_onboot|default(True) -%}
+{% set cfg_version    = redis.cfg_version|default('2.8') -%}
 
 
 {% if install_from == 'source' %}
 
 
-{% set user           = salt['pillar.get']('redis:user', 'redis') -%}
-{% set group          = salt['pillar.get']('redis:group', user) -%}
-{% set home           = salt['pillar.get']('redis:home', '/var/lib/redis') -%}
-{% set bin            = salt['pillar.get']('redis:bin', '/usr/local/bin/redis-server') -%}
+{% set user           = redis.user|default('redis') -%}
+{% set cfg_name       = redis.cfg_name|default('/etc/redis/redis.conf') -%}
+{% set group          = redis.group|default(user) -%}
+{% set home           = redis.home|default('/var/lib/redis') -%}
+{% set bin            = redis.bin|default('/usr/local/bin/redis-server') -%}
 
 redis_group:
   group.present:
@@ -36,14 +37,14 @@ redis_user:
 
 redis-init-script:
   file.managed:
-    - name: /etc/init/redis-server.conf
+    - name: /etc/init.d/redis-server
     - template: jinja
-    - source: salt://redis/templates/upstart.conf.jinja
+    - source: salt://redis/templates/redis-server.jinja
     - mode: 0750
     - user: root
     - group: root
     - context:
-        conf: /etc/redis/redis.conf
+        conf: {{ cfg_name }}
         user: {{ user }}
         bin: {{ bin }}
     - require:
