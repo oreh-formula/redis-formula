@@ -87,7 +87,7 @@ redis-server:
     - name: /etc/redis/redis.conf
     - managed
     - template: jinja
-    - source: salt://redis/templates/redis-{{ cfg_version }}.conf.jinja
+    - source: salt://redis/templates/redis-{{ redis.cfg_version }}.conf.jinja
     - require:
       - file: redis-init-script
       - file: redis-pid-dir
